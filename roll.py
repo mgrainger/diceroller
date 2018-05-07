@@ -10,7 +10,7 @@ class die:
 		self.sides = x
 	
 	def roll_die (self):
-		return self.sides[random.randint(1, len(self.sides)-1)]
+		return self.sides[random.randint(0, len(self.sides))]
 		
 	def roll(self, advantage=False, disadvantage=False):
 		if advantage and disadvantage:
