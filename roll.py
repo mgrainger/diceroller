@@ -5,12 +5,16 @@ import re
 class die:
 	
 	sides = [1, 2, 3, 4, 5, 6]
+	label = ""
+	attributes = []
 		
-	def __init__(self, x):
+	def __init__(self, x, l="", a=[]):
 		self.sides = x
+		self.label = l
+		self.attributes = a
 	
 	def roll_die (self):
-		return self.sides[random.randint(0, len(self.sides))]
+		return self.sides[random.randint(0, len(self.sides)-1)]
 		
 	def roll(self, advantage=False, disadvantage=False):
 		if advantage and disadvantage:
@@ -32,6 +36,13 @@ class die:
 		roll2 = self.roll_die()
 		return roll1 if roll1 <= roll2 else roll2
 	
+	def printInfo(self):
+		print "================================================"
+		print "Die Label: " + str(self.label)
+		print "Die Attriburtes: " + str(self.attributes)
+		print "Die Sides: " + str(self.sides)
+		
+	
 	
 class dice:
 	
@@ -50,8 +61,30 @@ class dice:
 		for die in self.dice_pool:
 			print die.roll()
 		
-	def adddie(self):
+	def add_die(self, d):
+		self.dice_pool.append(d)
+	
+	def removeDie(self):
+		self.dice_pool.pop()
+	
+	def removeDieByLabel(self, xlabel):
+		for index, die in enumerate(self.dice_pool):
+			if die.label == xlabel:
+				del self.dice_pool[index]
+				break #remove die
+		
+				
+	
+	def removeDieByType(self):
 		pass
+		
+	def removeDieByAttribute(self):
+		pass
+		
+	def printDicePool(self):
+		for die in self.dice_pool:
+			print die.printInfo()
+	
 	
 	
 	
@@ -68,11 +101,11 @@ def main():
 	#for side in range(int(parsed[0][1])):
 	#	die_sides.append(side)
 		
-	die_sides = range(int(parsed[0][1]))
+	die_sides = range(1, int(parsed[0][1])+1)
 	print "die_sides = " + str(die_sides)
 	
 	for _ in range(int(parsed[0][0])):
-		myDie = die(die_sides)
+		myDie = die(die_sides, "Die" + str(_), ["Damage", "Radiant"])
 		myDicePool.append(myDie)
 	
 	print "myDicePool = " + str(myDicePool)
@@ -82,7 +115,7 @@ def main():
 	#myDie = die()
 	#myDie.roll(int(parsed[0][0]), int(parsed[0][1]))
 	myDice.rollpool()
-	
+	myDice.printDicePool()
 	
 	
 if __name__== "__main__":
