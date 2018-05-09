@@ -1,12 +1,14 @@
 
 import random
 import re
+import string
 
 class die:
 	
 	sides = [1, 2, 3, 4, 5, 6]
 	label = ""
 	attributes = []
+	last_roll = ""
 		
 	def __init__(self, x, l="", a=[]):
 		self.sides = x
@@ -44,12 +46,17 @@ class die:
 		
 	
 	
-class dice:
+class dicepool:
 	
 	dice_pool = []
+	label = ""
+	last_roll = []
+	bonus = 0
 	
-	def __init__(self, d_pool):
-		self.dice_pool = d_pool
+	def __init__(self, equation, l=""):
+		
+		self.label = l
+		self.createDice(equation)
 	
 	def sum(self, rolls):
 		return sum(rolls)
@@ -57,11 +64,23 @@ class dice:
 	def average(self, rolls):
 		return average(rolls)
 	
-	def rollpool(self):
-		for die in self.dice_pool:
-			print die.roll()
+	def halfd(self):
+		pass
 		
-	def add_die(self, d):
+	def halfu(self):
+		pass
+	
+	def rollPool(self):
+		total_roll = []
+		for die in self.dice_pool:
+			this_roll = die.roll()
+			total_roll.append(this_roll)
+			#print this_roll
+		this_roll += self.bonus
+		last_roll = this_roll
+		return total_roll
+		
+	def addDie(self, d):
 		self.dice_pool.append(d)
 	
 	def removeDie(self):
@@ -85,37 +104,77 @@ class dice:
 		for die in self.dice_pool:
 			print die.printInfo()
 	
-	
+	def getLastRoll(self):
+		return self.last_roll
+		
+	def printLastRoll(self):
+		for roll in self.last_roll:
+			print roll
+
+	def createDice(self, dicestring):
+		num_dice = 0
+		num_sides = 0
+		
+		#self.bonus = int(re.search("([\+-]+\d+)\s", dicestring))
+		parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
+		for dice_equation in parsed:
+			num_dice = int(re.search("(\d+)[dD]+\d+", dice_equation))
+			num_sides = int(re.search("\d+[dD]+(\d+)", dice_equation))
+			for die in range(num_dice):
+				newDie = die(num_sides)
+				self.addDie(newDie)
 	
 	
 def main():
-	input = raw_input("Enter dice to roll: ")
-	parsed = re.findall("(\d+)[dD]+(\d+)", input)
-	#print input
-	#print parsed
-	#print args
 	
-	die_sides = []
-	myDicePool = []
+	input = ""
+	#myDice = dicepool()
+	dicebag = [] #Storage for multiple dice pool objects.
 	
-	#for side in range(int(parsed[0][1])):
-	#	die_sides.append(side)
+	while input != "exit":
 		
-	die_sides = range(1, int(parsed[0][1])+1)
-	print "die_sides = " + str(die_sides)
-	
-	for _ in range(int(parsed[0][0])):
-		myDie = die(die_sides, "Die" + str(_), ["Damage", "Radiant"])
-		myDicePool.append(myDie)
-	
-	print "myDicePool = " + str(myDicePool)
-	
-	myDice = dice(myDicePool)
-	
-	#myDie = die()
-	#myDie.roll(int(parsed[0][0]), int(parsed[0][1]))
-	myDice.rollpool()
-	myDice.printDicePool()
+		input = raw_input("ROLL: ")
+		split_input = string.split(input)
+		
+		if split_input[0] == "exit": 
+			break
+		elif split_input[0] == "clear":
+			pass
+		elif split_input[0] == "new":
+			newPool = dicepool(split_input[2], split_input[1])
+			dicebag.append(newPool)
+			
+			
+		elif input == "print":
+			pass
+		
+		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", input)
+		#print input
+		#print parsed
+		#print args
+		
+		die_sides = []
+		#myDicePool = []
+		
+		
+		#for side in range(int(parsed[0][1])):
+		#	die_sides.append(side)
+			
+		#die_sides = range(1, int(parsed[0][1])+1)
+		#print "die_sides = " + str(die_sides)
+		
+		#for num in range(int(parsed[0][0])):
+		#	currentDie = die(die_sides, "Die" + str(num), ["Damage", "Radiant"])
+		#	myDice.addDie(currentDie)
+		
+		#print "myDice = " + str(myDicePool)
+		
+		#myDice = dicepool(myDicePool)
+		
+		#myDie = die()
+		#myDie.roll(int(parsed[0][0]), int(parsed[0][1]))
+		print str(myDice.rollPool())
+		myDice.printDicePool()
 	
 	
 if __name__== "__main__":
