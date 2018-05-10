@@ -58,6 +58,13 @@ class dicepool:
 		self.label = l
 		self.createDice(equation)
 	
+	def __del__(self):
+		#del self.dice_pool
+		#del self.label
+		#del self.last_roll
+		#del self.bonus
+		pass
+	
 	def sum(self, rolls):
 		return sum(rolls)
 	
@@ -71,6 +78,7 @@ class dicepool:
 		pass
 	
 	def rollPool(self):
+		this_roll = 0
 		total_roll = []
 		for die in self.dice_pool:
 			this_roll = die.roll()
@@ -85,6 +93,9 @@ class dicepool:
 	
 	def removeDie(self):
 		self.dice_pool.pop()
+		
+	def removeDice(self):
+		del dice_pool
 	
 	def removeDieByLabel(self, xlabel):
 		for index, die in enumerate(self.dice_pool):
@@ -129,6 +140,10 @@ class dicepool:
 				newDie = die(num_range)
 				self.addDie(newDie)
 	
+def parseDice(self, equation):
+	#this parses dice equations in the form of #d#+#. Returns a dict list of the three values.
+	parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
+	
 	
 def main():
 	
@@ -141,19 +156,35 @@ def main():
 		input = raw_input("[>]: ")
 		split_input = string.split(input)
 		
-		if split_input[0] == "exit": 
+		if input == "":
+			continue
+		elif split_input[0] == "quit" or split_input[0] == "q": 
 			break
 		elif split_input[0] == "clear":
-			pass
+			diecbag = []
 		elif split_input[0] == "new":
-			newPool = dicepool(split_input[2], split_input[1])
-			dicebag.append(newPool)
+			#newPool = dicepool(split_input[2], split_input[1])
+			dicebag.append(dicepool(split_input[2], split_input[1]))
 			print "New dice pool " + split_input[1] + " created."
 			
 		elif split_input[0] == "print":
-			pass
+			for pool in dicebag:
+				pool.printDicePool()
 		
 		elif split_input[0] == "roll":
+			if re.match("\d+[dD]\d+[\+-]*\d*", split_input[1]):
+				quickPool = dicepool(split_input[1], "QuickPool")
+				print str(quickPool.rollPool())
+				#quickPool.removeDice()
+				#del quickPool
+			else:
+				for pool in dicebag:
+					if pool.label == split_input[1]:
+						print str(pool.rollPool())
+		
+		elif split_input[0] == "get":
+			# get <lable> label
+			# get <label> lastroll
 			pass
 		
 		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", input)
@@ -184,7 +215,8 @@ def main():
 		#print str(myDice.rollPool())
 		#myDice.printDicePool()
 		
-		print str(dicebag[0].rollPool())
+		#print str(dicebag[0].rollPool())
+
 	
 	
 if __name__== "__main__":
