@@ -10,8 +10,8 @@ class die:
 	attributes = []
 	last_roll = ""
 		
-	def __init__(self, x, l="", a=[]):
-		self.sides = x
+	def __init__(self, s, l="", a=[]):
+		self.sides = s
 		self.label = l
 		self.attributes = a
 	
@@ -112,16 +112,21 @@ class dicepool:
 			print roll
 
 	def createDice(self, dicestring):
-		num_dice = 0
-		num_sides = 0
+		#num_dice = 0
+		#num_sides = 0
 		
 		#self.bonus = int(re.search("([\+-]+\d+)\s", dicestring))
 		parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
 		for dice_equation in parsed:
-			num_dice = int(re.search("(\d+)[dD]+\d+", dice_equation))
-			num_sides = int(re.search("\d+[dD]+(\d+)", dice_equation))
-			for die in range(num_dice):
-				newDie = die(num_sides)
+			temp = re.search("(\d+)[dD]+\d+", dice_equation)
+			print "temp = " + str(temp.group(1))
+			num_dice = int(temp.group(1))
+			num_sides = int(re.search("\d+[dD]+(\d+)", dice_equation).group(1))
+			print "num_sides = " + str(num_sides)
+			num_range = range(1, num_sides+1)
+			print "num_range = " + str(num_range)
+			for _ in range(num_dice):
+				newDie = die(num_range)
 				self.addDie(newDie)
 	
 	
@@ -133,7 +138,7 @@ def main():
 	
 	while input != "exit":
 		
-		input = raw_input("ROLL: ")
+		input = raw_input("[>]: ")
 		split_input = string.split(input)
 		
 		if split_input[0] == "exit": 
@@ -143,9 +148,12 @@ def main():
 		elif split_input[0] == "new":
 			newPool = dicepool(split_input[2], split_input[1])
 			dicebag.append(newPool)
+			print "New dice pool " + split_input[1] + " created."
 			
-			
-		elif input == "print":
+		elif split_input[0] == "print":
+			pass
+		
+		elif split_input[0] == "roll":
 			pass
 		
 		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", input)
@@ -153,7 +161,7 @@ def main():
 		#print parsed
 		#print args
 		
-		die_sides = []
+		#die_sides = []
 		#myDicePool = []
 		
 		
@@ -173,8 +181,10 @@ def main():
 		
 		#myDie = die()
 		#myDie.roll(int(parsed[0][0]), int(parsed[0][1]))
-		print str(myDice.rollPool())
-		myDice.printDicePool()
+		#print str(myDice.rollPool())
+		#myDice.printDicePool()
+		
+		print str(dicebag[0].rollPool())
 	
 	
 if __name__== "__main__":
