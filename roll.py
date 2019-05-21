@@ -23,13 +23,14 @@ class die:
 		{"label": "5", "side" : 5},
 		{"label": "6", "side" : 6}
 		]
-	label = ""
+	die_label = ""
 	attributes = []
 	last_roll = []
 		
-	def __init__(self):
+	def __init__(self, s):
 		#self.label = "Test"
 		self.set_label("Test")
+		self.set_sides(s)
 	
 	#def __init__(self, side_label, side_num, l=""):
 	#	self.sides[side_label] = side_num
@@ -42,11 +43,15 @@ class die:
 		return self.sides
 		
 	def set_label(self, l=""):
-		self.label = l
-		return self.label
+		self.die_label = l
+		return self.die_label
+		
+	def set_last_roll(self, lr=[]):
+		self.last_roll = lr
+		return self.last_roll	
 		
 	def roll_die (self):
-		return set_last_roll(self.sides[random.randint(0, len(self.sides)-1)])
+		return self.set_last_roll(self.sides[random.randint(0, len(self.sides)-1)])
 		
 	def roll(self, advantage=False, disadvantage=False):
 		if advantage and disadvantage:
@@ -67,10 +72,6 @@ class die:
 		roll1 = self.roll_die()
 		roll2 = self.roll_die()
 		return roll1 if roll1 <= roll2 else roll2
-	
-	def set_last_roll(self, lr=[]):
-		self.last_roll = lr
-		return self.last_roll
 	
 	def printInfo(self):
 		print "================================================"
@@ -115,7 +116,7 @@ class dicepool:
 		this_roll = 0
 		total_roll = []
 		for die in self.dice_pool:
-			this_roll = die.roll()
+			this_roll = die.roll()["side"]
 			total_roll.append(this_roll)
 			#print this_roll
 		this_roll += self.bonus
@@ -170,9 +171,12 @@ class dicepool:
 			print "num_sides = " + str(num_sides)
 			num_range = range(1, num_sides+1)
 			print "num_range = " + str(num_range)
-			for side in range(num_dice):
+			for dice in range(num_dice):
 				#newDie = die(num_range)
-				newDie = die(num_range, side, side)
+				die_sides = []
+				for side in range(num_sides):
+					die_sides.append({"label": str(side), "side": side})
+				newDie = die(die_sides)
 				self.addDie(newDie)
 	
 def parseDice(self, equation):
