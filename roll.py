@@ -5,18 +5,48 @@ import string
 
 class die:
 	
-	sides = [1, 2, 3, 4, 5, 6]
+	#sides = [1, 2, 3, 4, 5, 6]
+	#sides = {
+	#	"1" : 1,
+	#	"2" : 2,
+	#	"3" : 3,
+	#	"4" : 4,
+	#	"5" : 5,
+	#	"6" : 6,
+	#}
+	
+	sides = [
+		{"label": "1", "side" : 1},
+		{"label": "2", "side" : 2},
+		{"label": "3", "side" : 3},
+		{"label": "4", "side" : 4},
+		{"label": "5", "side" : 5},
+		{"label": "6", "side" : 6}
+		]
 	label = ""
 	attributes = []
-	last_roll = ""
+	last_roll = []
 		
-	def __init__(self, s, l="", a=[]):
-		self.sides = s
-		self.label = l
-		self.attributes = a
+	def __init__(self):
+		#self.label = "Test"
+		self.set_label("Test")
 	
+	#def __init__(self, side_label, side_num, l=""):
+	#	self.sides[side_label] = side_num
+	#	self.label = l
+		#self.attributes = a
+	
+	#Takes in a dictionary object.
+	def set_sides(self, s=[]):
+		self.sides = s
+		return self.sides
+		
+	def set_label(self, l=""):
+		self.label = l
+		return self.label
+		
 	def roll_die (self):
-		return self.sides[random.randint(0, len(self.sides)-1)]
+		return set_last_roll(self.sides[random.randint(0, len(self.sides)-1)])
 		
 	def roll(self, advantage=False, disadvantage=False):
 		if advantage and disadvantage:
@@ -37,6 +67,10 @@ class die:
 		roll1 = self.roll_die()
 		roll2 = self.roll_die()
 		return roll1 if roll1 <= roll2 else roll2
+	
+	def set_last_roll(self, lr=[]):
+		self.last_roll = lr
+		return self.last_roll
 	
 	def printInfo(self):
 		print "================================================"
@@ -128,7 +162,7 @@ class dicepool:
 		
 		#self.bonus = int(re.search("([\+-]+\d+)\s", dicestring))
 		parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
-		for dice_equation in parsed:
+		for dice_equation in parsed: #Try replacing this with parseDice
 			temp = re.search("(\d+)[dD]+\d+", dice_equation)
 			print "temp = " + str(temp.group(1))
 			num_dice = int(temp.group(1))
@@ -136,8 +170,9 @@ class dicepool:
 			print "num_sides = " + str(num_sides)
 			num_range = range(1, num_sides+1)
 			print "num_range = " + str(num_range)
-			for _ in range(num_dice):
-				newDie = die(num_range)
+			for side in range(num_dice):
+				#newDie = die(num_range)
+				newDie = die(num_range, side, side)
 				self.addDie(newDie)
 	
 def parseDice(self, equation):
@@ -153,7 +188,7 @@ def main():
 	
 	while input != "exit":
 		
-		input = raw_input("[>]: ")
+		input = raw_input("[&]: ")
 		split_input = string.split(input)
 		
 		if input == "":
@@ -186,6 +221,17 @@ def main():
 			# get <lable> label
 			# get <label> lastroll
 			pass
+		elif split_input[0] == "help":
+			print "-= COMMANDS =-"
+			print "quit : ends the program"
+			print "clear : clears the dicebag"
+			print "new : create a new named dicebag ex. \'new <dice> <label>\'"
+			print "roll : roll the dice indicated. ex. \'roll <dice>\'"
+		elif split_input[0] == "test":
+			testDie = die()
+			print testDie.roll_die()["side"]
+			testDie.set_sides([{"label": "1", "side" : 1}, {"label": "2", "side" : 2}, {"label": "3", "side" : 3}, {"label": "4", "side" : 4}])
+			testDie.printInfo()
 		
 		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", input)
 		#print input
