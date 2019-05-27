@@ -1,0 +1,26 @@
+Roll.py Design Document
+
+This document describes the features intended to be implemented in Roll.py for version 1.0 to be considered complete.
+
+* Command Line Interface that can take the following commands.
+** Roll [die equation|dice pool name] - Will roll dice formula of the form XdY+Z where 
+   X= number of dice, 
+   Y= number of sides for each of X dice, 
+   Z= additional integer modifer (positive or negative).
+   Additional modifiers:
+   -a = roll die with advantage
+   -d = roll die with disadvantage
+   -v show individiual die rolls
+   -l = display label value
+   -hd = return half the total value, rounded down
+   -hu = return half the total value, rounded up
+   -(?) = discard dice of certain value, reroll it and add to value normally.
+   -(?) = discard lowest value die.
+** Print = 
+** New [diecpool] = create a new dice pool
+** View [dicepool] = display dice pool details
+** Clear [dicepool]= clear indicated dice pool, "all" clears all dice pools
+** Add [dice equation] [dicepool] = Add dice to dicepool
+** Exit = Exit Rolll.py
+* Ability for each die object to have different values for the label and numerical value for each side.
+* 
