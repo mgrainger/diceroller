@@ -104,7 +104,7 @@ class dicepool:
 		return sum(rolls)
 	
 	def average(self, rolls):
-		return average(rolls)
+		pass
 	
 	def halfd(self):
 		pass
@@ -179,28 +179,28 @@ class dicepool:
 				newDie = die(die_sides)
 				self.addDie(newDie)
 	
-def parseDice(self, equation):
+def parseDice(self, dicestring):
 	#this parses dice equations in the form of #d#+#. Returns a dict list of the three values.
 	parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
 	
 	
 def main():
 	
-	input = ""
+	user_input = ""
 	#myDice = dicepool()
 	dicebag = [] #Storage for multiple dice pool objects.
 	
-	while input != "exit":
+	while user_input != "exit":
 		
-		input = raw_input("[&]: ")
-		split_input = string.split(input)
+		user_input = input("[&]: ")
+		split_input = string.split(user_input)
 		
-		if input == "":
+		if user_input == "":
 			continue
 		elif split_input[0] == "quit" or split_input[0] == "q": 
 			break
 		elif split_input[0] == "clear":
-			diecbag = []
+			dicebag = []
 		elif split_input[0] == "new":
 			#newPool = dicepool(split_input[2], split_input[1])
 			dicebag.append(dicepool(split_input[2], split_input[1]))
@@ -237,7 +237,7 @@ def main():
 			testDie.set_sides([{"label": "1", "side" : 1}, {"label": "2", "side" : 2}, {"label": "3", "side" : 3}, {"label": "4", "side" : 4}])
 			testDie.printInfo()
 		
-		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", input)
+		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", user_input)
 		#print input
 		#print parsed
 		#print args
