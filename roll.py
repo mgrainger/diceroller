@@ -74,10 +74,10 @@ class die:
 		return roll1 if roll1 <= roll2 else roll2
 	
 	def printInfo(self):
-		print "================================================"
-		print "Die Label: " + str(self.label)
-		print "Die Attriburtes: " + str(self.attributes)
-		print "Die Sides: " + str(self.sides)
+		print("================================================")
+		print("Die Label: " + str(self.label))
+		print("Die Attriburtes: " + str(self.attributes))
+		print("Die Sides: " + str(self.sides))
 		
 	
 	
@@ -148,14 +148,14 @@ class dicepool:
 		
 	def printDicePool(self):
 		for die in self.dice_pool:
-			print die.printInfo()
+			print(die.printInfo())
 	
 	def getLastRoll(self):
 		return self.last_roll
 		
 	def printLastRoll(self):
 		for roll in self.last_roll:
-			print roll
+			print(roll)
 
 	def createDice(self, dicestring):
 		#num_dice = 0
@@ -165,12 +165,12 @@ class dicepool:
 		parsed = re.findall("[+-]*(\d+[dD]+\d+)", dicestring)
 		for dice_equation in parsed: #Try replacing this with parseDice
 			temp = re.search("(\d+)[dD]+\d+", dice_equation)
-			print "temp = " + str(temp.group(1))
+			print("temp = " + str(temp.group(1)))
 			num_dice = int(temp.group(1))
 			num_sides = int(re.search("\d+[dD]+(\d+)", dice_equation).group(1))
-			print "num_sides = " + str(num_sides)
+			print("num_sides = " + str(num_sides))
 			num_range = range(1, num_sides+1)
-			print "num_range = " + str(num_range)
+			print("num_range = " + str(num_range))
 			for dice in range(num_dice):
 				#newDie = die(num_range)
 				die_sides = []
@@ -204,7 +204,7 @@ def main():
 		elif split_input[0] == "new":
 			#newPool = dicepool(split_input[2], split_input[1])
 			dicebag.append(dicepool(split_input[2], split_input[1]))
-			print "New dice pool " + split_input[1] + " created."
+			print("New dice pool " + split_input[1] + " created.")
 			
 		elif split_input[0] == "print":
 			for pool in dicebag:
@@ -213,27 +213,27 @@ def main():
 		elif split_input[0] == "roll":
 			if re.match("\d+[dD]\d+[\+-]*\d*", split_input[1]):
 				quickPool = dicepool(split_input[1], "QuickPool")
-				print str(quickPool.rollPool())
+				print(str(quickPool.rollPool()))
 				#quickPool.removeDice()
 				#del quickPool
 			else:
 				for pool in dicebag:
 					if pool.label == split_input[1]:
-						print str(pool.rollPool())
+						print(str(pool.rollPool()))
 		
 		elif split_input[0] == "get":
 			# get <lable> label
 			# get <label> lastroll
 			pass
 		elif split_input[0] == "help":
-			print "-= COMMANDS =-"
-			print "quit : ends the program"
-			print "clear : clears the dicebag"
-			print "new : create a new named dicebag ex. \'new <dice> <label>\'"
-			print "roll : roll the dice indicated. ex. \'roll <dice>\'"
+			print("-= COMMANDS =-")
+			print("quit : ends the program")
+			print("clear : clears the dicebag")
+			print("new : create a new named dicebag ex. \'new <dice> <label>\'")
+			print("roll : roll the dice indicated. ex. \'roll <dice>\'")
 		elif split_input[0] == "test":
 			testDie = die()
-			print testDie.roll_die()["side"]
+			print(testDie.roll_die()["side"])
 			testDie.set_sides([{"label": "1", "side" : 1}, {"label": "2", "side" : 2}, {"label": "3", "side" : 3}, {"label": "4", "side" : 4}])
 			testDie.printInfo()
 		
