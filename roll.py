@@ -193,7 +193,7 @@ def main():
 	while user_input != "exit":
 		
 		user_input = input("[&]: ")
-		split_input = string.split(user_input)
+		split_input = user_input.split()  #string.split(user_input)
 		
 		if user_input == "":
 			continue
