@@ -24,3 +24,23 @@ This document describes the features intended to be implemented in Roll.py for v
 ** Exit = Exit Rolll.py
 * Ability for each die object to have different values for the label and numerical value for each side.
 * 
+
+die Class
+The "die" class should know how to: 
+* Roll itself and return a label and integer value for the face rolled.
+* Create itself based on a numerical value of the sides. 
+** Default to the labels being string versions of the numerical values.
+?? Include impossible die types?
+?? Max side value?
+?? Min side value?
+?? How to handle percentile die?
+Create die function needs to take in following values
+* Number of sides of the die. Integer
+* Labels of sides of the die.  Array of string values.  
+* Starting integer value. 
+* Increment integer value
+
+VARIABLES:
+* die_name: The name of the indiviual Die. i.e. "Wild"
+
+2d% &

@@ -15,40 +15,76 @@ class die:
 	#	"6" : 6,
 	#}
 	
-	sides = [
-		{"label": "1", "side" : 1},
-		{"label": "2", "side" : 2},
-		{"label": "3", "side" : 3},
-		{"label": "4", "side" : 4},
-		{"label": "5", "side" : 5},
-		{"label": "6", "side" : 6}
-		]
-	die_label = ""
+	sides = []
+	#sides = [
+	#	{"label": "1", "side" : 1},
+	#	{"label": "2", "side" : 2},
+	#	{"label": "3", "side" : 3},
+	#	{"label": "4", "side" : 4},
+	#	{"label": "5", "side" : 5},
+	#	{"label": "6", "side" : 6}
+	#	]
+	die_name = ""
 	attributes = []
 	last_roll = []
+	last_roll_str = ""
+	last_roll_int = 0
+	die_color = ""
 		
-	def __init__(self, s):
+	def __init__(self, s=6, name = "", side_labels=[], start_value=1, step_value=1):
+		#if name != "" :
+		#	self.die_name = name
 		#self.label = "Test"
-		self.set_label("Test")
-		self.set_sides(s)
-	
+		#create_die(self, s, side_labels, start_value=1, step_value=1)
+		self.set_name(name)
+		#self.set_sides(s)
+		#If no values are set for side lables, default to integer lables.
+		if len(side_labels) == 0:
+			default_labels = True
+		else:
+			default_labels = False
+		
+
+
+		die_sides = [] #array to store die sides
+		for side in range(start_value, s+1, step_value):
+			if default_labels:
+				die_sides.append({"label": str(side), "side": side})
+			else:
+				die_sides.append({"label": side_labels[side], "side": side})
+		self.set_sides(die_sides)
+
+
 	#def __init__(self, side_label, side_num, l=""):
 	#	self.sides[side_label] = side_num
 	#	self.label = l
 		#self.attributes = a
-	
+	def create_die(self, s, side_labels, start_value, step_value):
+		#For each side of the die...
+		for ctr in s:
+			set_sides()
+
 	#Takes in a dictionary object.
 	def set_sides(self, s=[]):
 		self.sides = s
 		return self.sides
 		
-	def set_label(self, l=""):
-		self.die_label = l
-		return self.die_label
+	def set_name(self, l=""):
+		self.die_name = l
+		return self.die_name
+	
+	def get_name(self):
+		return self.die_name
 		
 	def set_last_roll(self, lr=[]):
 		self.last_roll = lr
 		return self.last_roll	
+	
+	def get_last_roll_int(self):
+		return self.last_roll[0].get("side")
+	
+	def get_last_roll_str(self):
+		return self.last_roll[0].get("label")
 		
 	def roll_die (self):
 		return self.set_last_roll(self.sides[random.randint(0, len(self.sides)-1)])
@@ -75,18 +111,21 @@ class die:
 	
 	def printInfo(self):
 		print("================================================")
-		print("Die Label: " + str(self.label))
+		print("Die Name: " + self.die_name)
 		print("Die Attriburtes: " + str(self.attributes))
 		print("Die Sides: " + str(self.sides))
+		print("Last Roll: " + str(self.last_roll))
+		print("Last Roll (str): " + str(self.last_roll_str))
+		print("Last Roll (int): " + str(self.last_roll_int))
 		
 	
 	
 class dicepool:
 	
-	dice_pool = []
-	label = ""
+	dice_pool = [] #stores diece objects
+	label = ""     # Name of the dice pool
 	last_roll = []
-	bonus = 0
+	bonus = 0      #Positive or negative integer value.
 	
 	def __init__(self, equation, l=""):
 		
@@ -211,6 +250,7 @@ def main():
 				pool.printDicePool()
 		
 		elif split_input[0] == "roll":
+			#If formmatted correctly
 			if re.match("\d+[dD]\d+[\+-]*\d*", split_input[1]):
 				quickPool = dicepool(split_input[1], "QuickPool")
 				print(str(quickPool.rollPool()))
@@ -232,11 +272,15 @@ def main():
 			print("new : create a new named dicebag ex. \'new <dice> <label>\'")
 			print("roll : roll the dice indicated. ex. \'roll <dice>\'")
 		elif split_input[0] == "test":
-			testDie = die()
+			testDie = die(6) #Create Dice Object
+			#testDie.createDie()
+
 			print(testDie.roll_die()["side"])
-			testDie.set_sides([{"label": "1", "side" : 1}, {"label": "2", "side" : 2}, {"label": "3", "side" : 3}, {"label": "4", "side" : 4}])
+			#testDie.set_sides([{"label": "1", "side" : 1}, {"label": "2", "side" : 2}, {"label": "3", "side" : 3}, {"label": "4", "side" : 4}])
 			testDie.printInfo()
-		
+
+
+
 		parsed = re.findall("[+-]*(\d+)[dD]+(\d+)", user_input)
 		#print input
 		#print parsed
