@@ -49,11 +49,11 @@ class die:
 	def printInfo(self):
 		print("================================================")
 		print("Die Name: " + self.die_name)
-		print("Die Attriburtes: " + str(self.attributes))
+		#print("Die Attriburtes: " + str(self.attributes))
 		print("Die Sides: " + str(self.sides))
 		print("Last Roll: " + str(self.last_roll))
-		print("Last Roll (str): " + self.last_roll_label)
-		print("Last Roll (int): " + str(self.last_roll_side))
+		print("Last Roll (label): " + self.last_roll_label)
+		print("Last Roll (side): " + str(self.last_roll_side))
 
 	
 class dicepool:
@@ -65,6 +65,7 @@ class dicepool:
 		self.last_roll = []
 		self.bonus = 0      #Positive or negative integer value.
 		self.createDice(equation)
+		self.dice_equation = equation
 		
 	def sum(self, rolls):
 		return sum(rolls)
@@ -87,9 +88,10 @@ class dicepool:
 			total_roll.append(this_roll)
 			#print this_roll
 		#this_roll += self.bonus
-		last_roll = this_roll
+		self.last_roll = total_roll
 		#return sum(total_roll)+self.bonus
-		return total_roll
+		#return total_roll
+		return sum(total_roll)+self.bonus
 		
 	def addDie(self, d):
 		self.dice_pool.append(d)
@@ -164,10 +166,11 @@ def main():
 	#myDice = dicepool()
 	dicebag = [] #Storage for multiple dice pool objects.
 	current_pool = 0
+	loaded_dicepool = dicepool("", "&")
 	
 	while user_input != "exit":
 		
-		user_input = input("[&]: ")
+		user_input = input("[" + loaded_dicepool.label + "]: ")
 		split_input = user_input.split()  #string.split(user_input)
 		
 		if user_input == "":
@@ -175,20 +178,31 @@ def main():
 		elif split_input[0] == "quit" or split_input[0] == "q": 
 			break
 		elif split_input[0] == "clear":
+			loaded_dicepool = dicepool("", "&")
 			dicebag = []
-		elif split_input[0] == "new":
+		elif split_input[0] == "create":
 			#newPool = dicepool(split_input[2], split_input[1])
-			dicebag.append(dicepool(split_input[2], split_input[1]))
-			print("New dice pool " + split_input[1] + " created.")
+			dicebag.append(dicepool(split_input[1], split_input[2]))
+			print("New dice pool " + split_input[2] + " with " + split_input[1] + " created.")
 			
 		elif split_input[0] == "print":
 			for pool in dicebag:
-				pool.printDicePool()
+				print(pool.label + "  " + pool.dice_equation)
+				#pool.printDicePool()
 		
+		elif split_input[0] == "load":
+			for pool in dicebag:
+				if pool.label == split_input[1]:
+					loaded_dicepool = pool
+					break
+				else:
+					print("Dice pool not found")
+
 		elif split_input[0] == "roll":
 			#If formmatted correctly
 			if len(split_input) == 1:
-				print ("Please enter a dice equation or dice pool name to roll.")
+				print(str(loaded_dicepool.rollPool()))
+				#print ("Please enter a dice equation or dice pool name to roll.")
 			elif re.match("\d+[dD]\d+[\+-]*\d*", split_input[1]):
 				quickPool = dicepool(split_input[1], "QuickPool")
 				print(str(quickPool.rollPool()))
@@ -197,7 +211,8 @@ def main():
 			else:
 				for pool in dicebag:
 					if pool.label == split_input[1]:
-						print(str(pool.rollPool()))
+						total = pool.rollPool()
+						print(str(pool.last_roll) + "+" + str(pool.bonus) + " = " + str(total))
 		
 		elif split_input[0] == "get":
 			# get <lable> label
@@ -207,7 +222,7 @@ def main():
 			print("-= COMMANDS =-")
 			print("quit : ends the program")
 			print("clear : clears the dicebag")
-			print("new : create a new named dicebag ex. \'new <dice> <label>\'")
+			print("create : create a new named dicebag ex. \'create <dice> <label>\'")
 			print("roll : roll the dice indicated. ex. \'roll <dice>\'")
 		elif split_input[0] == "test":
 			testDie = die(6) #Create Dice Object
