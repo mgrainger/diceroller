@@ -4,68 +4,22 @@ import re
 import string
 
 class die:
-	
-	#sides = [1, 2, 3, 4, 5, 6]
-	#sides = {
-	#	"1" : 1,
-	#	"2" : 2,
-	#	"3" : 3,
-	#	"4" : 4,
-	#	"5" : 5,
-	#	"6" : 6,
-	#}
-	
-	#sides = []
-	#sides = [
-	#	{"label": "1", "side" : 1},
-	#	{"label": "2", "side" : 2},
-	#	{"label": "3", "side" : 3},
-	#	{"label": "4", "side" : 4},
-	#	{"label": "5", "side" : 5},
-	#	{"label": "6", "side" : 6}
-	#	]
-
 		
 	def __init__(self, s=6, name = "", side_labels=[], start_value=1, step_value=1):
 		self.sides = []
 		self.die_name = name
-		#self.attributes = []
 		self.last_roll = []
 		self.last_roll_label = ""
 		self.last_roll_side = 0
 		self.die_color = ""
 		
-		#if name != "" :
-		#	self.die_name = name
-		#self.label = "Test"
-		#create_die(self, s, side_labels, start_value=1, step_value=1)
 		self.set_name(name)
-		#self.set_sides(s)
-		#If no values are set for side lables, default to integer lables.
-		#if len(side_labels) == 0:
-		#	default_labels = True
-		#else:
-		#	default_labels = False
 		
-
-
-		#die_sides = [] #array to store die sides
 		for side in range(start_value, s+1, step_value):
 			if len(side_labels) == 0:
 				self.sides.append({"label": str(side), "side": side})
 			else:
 				self.sides.append({"label": side_labels[side], "side": side})
-		#self.set_sides(self.sides)
-
-
-	#def __init__(self, side_label, side_num, l=""):
-	#	self.sides[side_label] = side_num
-	#	self.label = l
-		#self.attributes = a
-	#def create_die(self, s, side_labels, start_value, step_value):
-		#For each side of the die...
-		#for ctr in s:
-		#	self.set_sides()
 
 	#Takes in a dictionary object.
 	def set_sides(self, s=[]):
@@ -92,25 +46,6 @@ class die:
 	def roll_die (self):
 		return self.set_last_roll(self.sides[random.randint(0, len(self.sides)-1)])
 		
-	#def roll(self, advantage=False, disadvantage=False):
-	#	if advantage and disadvantage:
-	#		return self.roll_die()
-	#	elif advantage:
-	#		return self.roll_with_advantage()
-	#	elif disadvantage:
-	#		return self.roll_with_disadvantage()
-	#	else:
-	#		return self.roll_die()
-	#
-	#def roll_with_advantage(self):
-	#	roll1 = self.roll_die()
-	#	roll2 = self.roll_die()
-	#	return roll1 if roll1 >= roll2 else roll2
-		
-	#def roll_with_disadvantage(self):
-	#	roll1 = self.roll_die()
-	#	return roll1 if roll1 <= roll2 else roll2
-
 	def printInfo(self):
 		print("================================================")
 		print("Die Name: " + self.die_name)
@@ -119,12 +54,9 @@ class die:
 		print("Last Roll: " + str(self.last_roll))
 		print("Last Roll (str): " + self.last_roll_label)
 		print("Last Roll (int): " + str(self.last_roll_side))
-		
-	
+
 	
 class dicepool:
-	
-
 	
 	def __init__(self, equation, label=""):
 		
@@ -133,14 +65,7 @@ class dicepool:
 		self.last_roll = []
 		self.bonus = 0      #Positive or negative integer value.
 		self.createDice(equation)
-	
-	def __del__(self):
-		#del self.dice_pool
-		#del self.label
-		#del self.last_roll
-		#del self.bonus
-		pass
-	
+		
 	def sum(self, rolls):
 		return sum(rolls)
 	
